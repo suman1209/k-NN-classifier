@@ -7,8 +7,11 @@ from typing import List
 from utilities import split_list
 from constants import SplitPercentage as Sp
 from logger import ClassifierLogger
+from constants import ConstantNames as Cn
 
-
+from config import Config
+import datetime
+from zoneinfo import ZoneInfo
 logger = ClassifierLogger().get_logger()
 
 
@@ -35,32 +38,38 @@ class CsvParser(DataSet):
        """
     def __init__(self, raw_data_path):
         super().__init__(raw_data_path)
-        self.data = self.initialise_data()
+        self.uploaded = datetime.datetime.now(tz=ZoneInfo("Asia/Colombo"))
+        self.data = self.initialise_data_from_file()
         self.train_data, self.hp_tuning_data, self.validation_data = self.split_dataset()
 
-    def initialise_data(self):
+    def initialise_data_from_file(self):
         assert self.raw_data_path.endswith(".csv"), f"The format of the input file {self.raw_data_path}" \
                                                     f" is not supported yet.."
         with open(self.raw_data_path, 'r') as csv_file:
-            csv_reader = csv.reader(csv_file)
+            csv_reader = csv.DictReader(csv_file)
+            bad_sample = []
             for idx, row in enumerate(csv_reader):
-                self.validate_data(idx, row)
-                sample = KnownSample(sepal_length=float(row[0]), sepal_width=float(row[1]),
-                                     petal_length=float(row[2]), petal_width=float(row[3]),
-                                     species=row[4])
-                CsvParser.DATASET.append(sample)
-
+                self.validate_input_data(idx, row)
+                try:
+                    sample = KnownSample.from_dict(row)
+                    CsvParser.DATASET.append(sample)
+                except Exception as exc:
+                    bad_sample.append(idx)
+                    logger.debug(f"Invalid Sample {idx}: {row}", str(exc))
+        if len(bad_sample) > 0:
+            logger.info(f"{len(bad_sample)} bad sample count received, check the log file {Config().log_filename}"
+                        f" for the details..")
+            if len(bad_sample) >= 0.5 * idx:
+                raise Exception("Almost half the input data is invalid!")
+        logger.info(f"Dataset uploaded and verified on {self.uploaded}..")
         return row
 
     @staticmethod
-    def validate_data(index: int, row: list):
-        assert len(row) == 5, f"Expected four features and 1 class label, but received {len(row)} for the entry" \
-                              f" num {index}"
-        assert isinstance(row[4], str), f"the class label is expected to be a str, but got {row[4]}-{type(row[4])}"
-        try:
-            row0, row1, row2, row3 = float(row[0]), float(row[1]), float(row[2]), float(row[3]) # noqa
-        except Exception as e:
-            raise Exception("Error in the dataset provided", str(e))
+    def validate_input_data(index: int, row: list):
+        assert len(row) == 5, f"Expected four features and 1 class label, but received {len(row)} entries for" \
+                              f" the entry num {index}"
+        assert isinstance(row[Cn.species.value], str), f"the class label is expected to be a str," \
+                                        f" but got {row[Cn.species.value]}-{type(row[Cn.species.value])}"  # noqa
 
     def split_dataset(self):
         """this method takes the list of samples and randomly splits it into training, hp_tuning, and validation

@@ -23,5 +23,23 @@ class DistanceAlgos:
     ed = "Euclidian"
 
 
+class Species(Enum):
+    IrisSetosa = "Iris-setosa"
+    IrisVersicolour = "Iris-versicolor"
+    IrisVirginica = "Iris-virginica"
+
+    @staticmethod
+    def validate(value: str):
+        allowed_species = set(item.value for item in Species)
+        if value in allowed_species:
+            return value
+        else:
+            raise ValueError(f"{value} is not an Invalid Species")
+
+
 if __name__ == "__main__":
     print(SplitPercentage.train.value)
+    # testing the Species classes
+    print(Species.validate("Iris-setosa"))
+    # testing the constant names
+    print(ConstantNames.species.value, "type - ", type(ConstantNames.species.value))
