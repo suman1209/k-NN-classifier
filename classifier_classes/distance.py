@@ -3,8 +3,8 @@
 # Contact Suman via sumanrbt1997@gmail.com for further details
 
 import math
-from sample import Sample
-from constants import DistanceAlgos as Da
+from classifier_classes.sample import Sample
+from classifier_classes.constants import DistanceAlgos as Da
 
 
 class EuclideanDistance:
@@ -34,6 +34,9 @@ class EuclideanDistance:
                           vect2.sepal_width - vect1.sepal_width,
                           vect2.sepal_length - vect1.sepal_length)
         return dist
+
+    def __repr__(self):
+        return f"EuclideanDistance()"
 
 
 class ManhattanDistance:
@@ -71,9 +74,9 @@ class ManhattanDistance:
 class DistanceFactory:
     @staticmethod
     def get_distance_algo(dist_algo):
-        if dist_algo == Da.ed4:
+        if dist_algo == Da.ed4.value:
             return EuclideanDistance()
-        elif dist_algo == Da.mh4:
+        elif dist_algo == Da.mh4.value:
             return ManhattanDistance()
         else:
             raise Exception(f"Invalid distance algorithm chosen: {dist_algo}")

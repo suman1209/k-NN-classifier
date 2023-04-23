@@ -1,5 +1,5 @@
 import logging
-from config import Config
+from classifier_classes.config import Config
 import os
 # @todo debug how to set the environmental variable
 os.environ['CLASSIFIER_HOME_DIR'] = 'D:/k-NN-classifier/'
@@ -28,8 +28,8 @@ class ClassifierLogger:
 
     def get_logger(self):
         logger = self.logger
-        console_handler = logging.StreamHandler()
-        console_handler.setFormatter(logging.Formatter(self.log_formater))
-        console_handler.setLevel(logging.INFO)
-        logger.addHandler(console_handler)
+        # console_handler = logging.StreamHandler()
+        # console_handler.setFormatter(logging.Formatter(self.log_formater))
+        # console_handler.setLevel(logging.INFO)
+        # logger.addHandler(console_handler)
         return logger

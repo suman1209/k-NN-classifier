@@ -2,9 +2,9 @@
 # This software is released under the MIT License.
 # Contact Suman via sumanrbt1997@gmail.com for further details
 
-from constants import ConstantNames as Cn
-from constants import Species
-from exceptions import InvalidSampleError
+from classifier_classes.constants import ConstantNames as Cn
+from classifier_classes.constants import Species
+from classifier_classes.exceptions import InvalidSampleError
 
 
 class Sample:
@@ -49,6 +49,11 @@ class KnownSample(Sample):
         except Exception as exc:
             print(f"Error when constructing the KnownSample object - {str(exc)}")
             raise
+
+    def is_prediction_true(self) -> bool:
+        if self.classification is not None:
+            return self.classification == self.species
+        raise Exception("The sample is not yet classified!")
 
     def __repr__(self):
         return f"KnownSample(sepal_length={self.sepal_length}, sepal_width={self.sepal_width}, " \

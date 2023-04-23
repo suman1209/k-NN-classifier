@@ -5,6 +5,10 @@
 from enum import Enum
 
 
+class Approximations:
+    round_nearest_to = 2
+
+
 class ConstantNames(Enum):
     sepal_length = "sepal_length"
     sepal_width = "sepal_width"
@@ -19,7 +23,7 @@ class SplitPercentage(Enum):
     validation: float = 0.3
 
 
-class DistanceAlgos:
+class DistanceAlgos(Enum):
     ed4 = "Euclidian"
     mh4 = "Manhattan"
 

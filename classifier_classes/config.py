@@ -8,7 +8,7 @@ import os.path
 
 class Config:
     home_dir = os.getenv("CLASSIFIER_HOME_DIR")
-    CONFIG_JSON = f"../classifier_config.json"
+    CONFIG_JSON = f"classifier_config.json"
     _instance = None
 
     def __new__(cls):

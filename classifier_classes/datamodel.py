@@ -2,13 +2,13 @@
 # This software is released under the MIT License.
 # Contact Suman via sumanrbt1997@gmail.com for further details
 import csv
-from sample import KnownSample
-from typing import List
-from utilities import split_list
-from constants import SplitPercentage as Sp
-from logger import ClassifierLogger
-from constants import ConstantNames as Cn
-from config import Config
+from classifier_classes.sample import KnownSample
+from typing import List, Tuple
+from classifier_classes.utilities import split_list
+from classifier_classes.constants import SplitPercentage as Sp
+from classifier_classes.logger import ClassifierLogger
+from classifier_classes.constants import ConstantNames as Cn
+from classifier_classes.config import Config
 import datetime
 from zoneinfo import ZoneInfo
 logger = ClassifierLogger().get_logger()
@@ -40,6 +40,15 @@ class CsvParser(DataSet):
         self.uploaded = datetime.datetime.now(tz=ZoneInfo("Asia/Colombo"))
         self.data = self.initialise_data_from_file()
         self.train_data, self.hp_tuning_data, self.validation_data = self.split_dataset()
+        self._populate_data_with_purpose()
+
+    def _populate_data_with_purpose(self) -> None:
+        for train_sample in self.train_data:
+            train_sample.train = True
+        for validation_sample in self.validation_data:
+            validation_sample.val = True
+        for hp_tuning_sample in self.hp_tuning_data:
+            hp_tuning_sample.hp_tuning = True
 
     def initialise_data_from_file(self):
         assert self.raw_data_path.endswith(".csv"), f"The format of the input file {self.raw_data_path}" \
@@ -70,7 +79,7 @@ class CsvParser(DataSet):
         assert isinstance(row[Cn.species.value], str), f"the class label is expected to be a str," \
                                         f" but got {row[Cn.species.value]}-{type(row[Cn.species.value])}"  # noqa
 
-    def split_dataset(self):
+    def split_dataset(self) -> Tuple[List[KnownSample], List[KnownSample], List[KnownSample]]:
         """this method takes the list of samples and randomly splits it into training, hp_tuning, and validation
            datasets
         """
