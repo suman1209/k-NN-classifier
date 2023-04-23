@@ -8,7 +8,6 @@ from utilities import split_list
 from constants import SplitPercentage as Sp
 from logger import ClassifierLogger
 from constants import ConstantNames as Cn
-
 from config import Config
 import datetime
 from zoneinfo import ZoneInfo
@@ -36,7 +35,7 @@ class CsvParser(DataSet):
        ...
        
        """
-    def __init__(self, raw_data_path):
+    def __init__(self, raw_data_path: str):
         super().__init__(raw_data_path)
         self.uploaded = datetime.datetime.now(tz=ZoneInfo("Asia/Colombo"))
         self.data = self.initialise_data_from_file()

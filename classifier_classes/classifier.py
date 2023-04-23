@@ -7,7 +7,7 @@ from constants import DistanceAlgos
 
 class Classifier:
     """ this class is responsible for the classification of the sample"""
-    def __init__(self, k: int, dist_algo: str = DistanceAlgos.ed.value):
+    def __init__(self, k: int, dist_algo: str = DistanceAlgos.ed4.value):
         self.k = k
         self.dist_algo = dist_algo
 

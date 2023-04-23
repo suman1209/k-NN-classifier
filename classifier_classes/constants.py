@@ -20,7 +20,8 @@ class SplitPercentage(Enum):
 
 
 class DistanceAlgos:
-    ed = "Euclidian"
+    ed4 = "Euclidian"
+    mh4 = "Manhattan"
 
 
 class Species(Enum):
