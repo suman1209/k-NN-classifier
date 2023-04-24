@@ -17,7 +17,7 @@ class KNNClassifier:
         self.classifier = Classifier(k=self.k, training_data=self.data_model.train_data, dist_algo=self.dist_algo)
 
     def get_optimum_hyper_parameters(self):
-        k, dist_algo = Hp(self.data_model).get_optmum_hp()
+        k, dist_algo = Hp(self.data_model).get_optimum_hp()
         return k, dist_algo
 
     def find_accuracy(self):
