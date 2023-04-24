@@ -11,7 +11,7 @@ from classifier_classes.constants import ConstantNames as Cn
 from classifier_classes.config import Config
 import datetime
 from zoneinfo import ZoneInfo
-logger = ClassifierLogger().get_logger()
+logger = ClassifierLogger.logger
 
 
 class DataSet:
@@ -69,7 +69,7 @@ class CsvParser(DataSet):
                         f" for the details..")
             if len(bad_sample) >= 0.5 * idx:
                 raise Exception("Almost half the input data is invalid!")
-        logger.info(f"Dataset uploaded and verified on {self.uploaded}..")
+        logger.debug(f"Dataset uploaded and verified on {self.uploaded}..")
         return row
 
     @staticmethod
@@ -92,7 +92,8 @@ class CsvParser(DataSet):
         return split_components
 
     def __repr__(self):
-        return f"CsvParser('{self.raw_data_path}')"
+        return f"CsvParser('{self.raw_data_path}') train: {len(self.train_data)}" \
+               f" hp_tuning: {len(self.hp_tuning_data)} validation: {len(self.validation_data)}"
 
 
 class DatasetFactory:

@@ -7,6 +7,9 @@ from classifier_classes.datamodel import DatasetFactory
 from classifier_classes.hyperparameters import HyperParameters as Hp
 from classifier_classes.classifier import Classifier
 from classifier_classes.constants import Approximations
+from classifier_classes.logger import ClassifierLogger
+# creating a logger instance only once
+logger = ClassifierLogger().get_logger()
 
 
 class KNNClassifier:
@@ -36,7 +39,7 @@ class KNNClassifier:
         return accuracy
 
     def __repr__(self):
-        return f"KNNClassifier({self.data_model.raw_data_path})\n accuracy: {self.find_accuracy()}"
+        return f"KNNClassifier('{self.data_model.raw_data_path}') created..."
 
 
 if __name__ == '__main__':
@@ -44,6 +47,14 @@ if __name__ == '__main__':
     parser.add_argument('--raw_inp_data_path', type=str, help='Path to the dataset file')
     args = parser.parse_args()
 
-    obj = KNNClassifier(args.raw_inp_data_path)
-    print(obj)
+    clf = KNNClassifier(args.raw_inp_data_path)
+    # clf object created
+    print(clf)
+    # clf data model created
+    print(f"The dataset based on the raw data from '{clf.data_model.raw_data_path}' has been successfully created...")
+    print(clf.data_model)
+    # best hyperparameters
+    print(f"Best Hyperparameters chosen: k: {clf.k} dist_algo: {clf.dist_algo}")
+    # performance on the validation data
+    print(f"Accuracy on the validation data: {clf.find_accuracy()}")
 

@@ -3,13 +3,11 @@
 # Contact Suman via sumanrbt1997@gmail.com for further details
 from classifier_classes.datamodel import CsvParser
 from classifier_classes.constants import DistanceAlgos as Da
-from tqdm import tqdm
 from classifier_classes.classifier import Classifier
 from classifier_classes.logger import ClassifierLogger
 from typing import List, Tuple
 
-logger = ClassifierLogger().get_logger()
-
+logger = ClassifierLogger.logger
 
 class HyperParameters:
     potential_k_values = [1, 3, 5, 7, 9, 11, 13]
@@ -25,7 +23,7 @@ class HyperParameters:
         num_hp_samples = len(self.hp_tuning_data)
         assert num_hp_samples > 0, "There is no data available for hyperparameter tuning"
         logger.debug(f"num of sample used for hyper parameter tuning: {num_hp_samples}")
-        for k in tqdm(HyperParameters.potential_k_values):
+        for k in HyperParameters.potential_k_values:
             for dis_algo in HyperParameters.potential_dist_algos:
                 classifier = Classifier(k=k, training_data=self.training_data, dist_algo=dis_algo)
                 test_score = 0

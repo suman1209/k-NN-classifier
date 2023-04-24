@@ -7,7 +7,6 @@ from classifier_classes.constants import DistanceAlgos
 from classifier_classes.distance import DistanceFactory
 from classifier_classes.logger import ClassifierLogger
 from collections import Counter
-logger = ClassifierLogger().get_logger()
 
 
 class ClassificationAlgo:
