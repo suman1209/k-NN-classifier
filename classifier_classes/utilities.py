@@ -99,6 +99,7 @@ def compare_two_files(reflog_path: str, out_file_path: str, test_name: str,
 
     return reflog_path_text_cleaned == out_file_path_text_cleaned
 
+
 if __name__ == "__main__":
     # test run
     print(split_list([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], 0.6, 0.3, 0.1))
