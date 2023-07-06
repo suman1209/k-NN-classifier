@@ -4,6 +4,7 @@
 
 import json
 import os.path
+import shutil
 from pathlib import Path
 
 
@@ -17,9 +18,10 @@ class Config:
         return cls._instance
 
     def __init__(self):
-        self.json_config = self.initilise_json_config()
         self._home_env_var = self._get_home_env_var()
+        self.json_config = self.initilise_json_config()
         self.initilise_reports_dir()
+
     @property
     def report_dir(self):
         return self.json_config["report_directory"]
@@ -32,16 +34,16 @@ class Config:
     def home_dir(self):
         return self._home_env_var
 
-    @staticmethod
-    def initilise_json_config():
-        with open(Config.CONFIG_JSON) as f:
+    def initilise_json_config(self):
+        with open(f"{self.home_dir}/{Config.CONFIG_JSON}") as f:
             json_config = json.load(f)
         return json_config
 
     def initilise_reports_dir(self):
         reports_dir = f"{self.home_dir}/{self.report_dir}"
-        if not os.path.exists(reports_dir):
-            os.makedirs(reports_dir)
+        if os.path.exists(reports_dir):
+            shutil.rmtree(reports_dir)
+        os.makedirs(reports_dir)
 
     @staticmethod
     def _get_home_env_var():
