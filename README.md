@@ -5,8 +5,7 @@ Reference:
 **This project is completely based on the guidance provided in the book "Python Object-Oriented Programming Fourth Edition by Steven F.Lott and Dusty Phillips". 
 This project is created purely for learning purpose.**
 
-This project is ideal for leaning purposes because the Iris Classification dataset is a simple well prepared dataset that we can enjoy good accuracies in the classification while giving more
-importance to learning best practice in software development. This project includes the following:
+This project is ideal for learning purposes because the Iris Classification is a simple well prepared problem. This helps one to focus more on best practice in software development. This project includes the following:
 
 1. Unit and regression tests
 2. Design patterns like strategy design pattern for choosing difference distance algorithms
