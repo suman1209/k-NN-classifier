@@ -40,7 +40,7 @@ class HyperParameters:
                     hps.append(workers.submit(classifier.test, self.hp_tuning_data))
                 for f in futures.as_completed(hps):
                     if isinstance(f.result(), Exception):
-                        print(f"Exception in getting restults from future objects")
+                        print("Exception in getting results from future objects")
                         raise
                     tuning_results.append(f.result())
         else:
