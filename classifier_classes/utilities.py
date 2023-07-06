@@ -6,6 +6,9 @@ import doctest
 import os
 import difflib
 import re
+from classifier_classes.constants import Approximations
+from typing import List
+from classifier_classes.sample import KnownSample
 # to get reproducible results
 random.seed(10)
 
@@ -98,6 +101,23 @@ def compare_two_files(reflog_path: str, out_file_path: str, test_name: str,
         diff_file.write(line_diff)
 
     return reflog_path_text_cleaned == out_file_path_text_cleaned
+
+
+def find_accuracy(classifier, dataset: List[KnownSample]):
+    correct_predictions = 0
+    # classifying all the samples in the validation set
+    for test_samples in dataset:
+        assert test_samples.val or test_samples.hp_tuning, "This sample is not intended for validation/hp tuning" \
+                                                           " purpose"
+        classifier.classify(test_samples)
+        if test_samples.is_prediction_true():
+            correct_predictions += 1
+
+    num_validation_samples = len(dataset)
+    assert num_validation_samples > 0, "There are no validation samples to find the validation accuracy"
+    accuracy = correct_predictions / num_validation_samples
+    accuracy = round(accuracy, Approximations.round_nearest_to) * 100
+    return accuracy
 
 
 if __name__ == "__main__":

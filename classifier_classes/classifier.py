@@ -1,11 +1,13 @@
 # Copyright (c) 2023 Suman
 # This software is released under the MIT License.
 # Contact Suman via sumanrbt1997@gmail.com for further details
+from __future__ import annotations
 from typing import List
 from classifier_classes.sample import Sample, KnownSample
 from classifier_classes.constants import DistanceAlgos
 from classifier_classes.distance import DistanceFactory
 from classifier_classes.logger import ClassifierLogger
+from classifier_classes.utilities import find_accuracy
 from collections import Counter
 logger = ClassifierLogger().get_logger()
 
@@ -19,6 +21,7 @@ class Classifier:
     """ this class is responsible for the classification of the sample"""
     def __init__(self, k: int, training_data: List[Sample],  dist_algo: str = DistanceAlgos.ed4.value):
         self.k = k
+        self.str_dist_algo = dist_algo
         self.dist_algo = DistanceFactory().get_distance_algo(dist_algo=dist_algo)
         self.training_data = training_data
 
@@ -61,6 +64,10 @@ class Classifier:
             logger.debug(f"k-nearest neightbours are \n {k_nearest_neighbours}")
 
         return k_nearest_neighbours
+
+    def test(self, hp_tuning_data: List[KnownSample]) -> tuple[int, str, float]:
+        """This is used for testing how good the classifier is on the provided hp tuning data"""
+        return self.k, self.str_dist_algo, find_accuracy(self, hp_tuning_data)
 
 
 if __name__ == "__main__":

@@ -7,12 +7,14 @@ from classifier_classes.constants import DistanceAlgos as Da
 from classifier_classes.classifier import Classifier
 from classifier_classes.logger import ClassifierLogger
 from typing import List, Tuple
+from concurrent.futures import ProcessPoolExecutor
+from concurrent import futures
 
 logger = ClassifierLogger.logger
 
 
 class HyperParameters:
-    potential_k_values = [1, 3, 5, 7, 9, 11, 13]
+    potential_k_values = list(range(1, 40))
     potential_dist_algos = [Da.ed4.value, Da.mh4.value]
 
     def __init__(self, data_model: CsvParser):
@@ -20,29 +22,38 @@ class HyperParameters:
         self.hp_tuning_data = data_model.hp_tuning_data
         self.validation_data = data_model.validation_data
 
-    def get_optimum_hp(self) -> tuple[int, str]:
+    def get_optimum_hp(self, fast_mode) -> tuple[int, str]:
         tuning_results = []
         num_hp_samples = len(self.hp_tuning_data)
         assert num_hp_samples > 0, "There is no data available for hyperparameter tuning"
         logger.debug(f"num of sample used for hyper parameter tuning: {num_hp_samples}")
+        grid_options = []
         for k in HyperParameters.potential_k_values:
             for dis_algo in HyperParameters.potential_dist_algos:
-                classifier = Classifier(k=k, training_data=self.training_data, dist_algo=dis_algo)
-                test_score = 0
-                for hp_tuning_samples in self.hp_tuning_data:
-                    assert hp_tuning_samples.hp_tuning, "This is not a sample that can be used for hp tuning"
-                    classifier.classify(hp_tuning_samples)
-                    if hp_tuning_samples.is_prediction_true():
-                        test_score += 1
-                test_score = test_score / num_hp_samples
-                tuning_results.append((k, dis_algo, test_score))
-
+                grid_options.append((k, dis_algo))
+        if fast_mode:
+            hps: List[futures.Future[tuple[int, str, float]]] = []
+            with ProcessPoolExecutor() as workers:
+                for grid_option in grid_options:
+                    classifier = Classifier(k=grid_option[0], training_data=self.training_data,
+                                            dist_algo=grid_option[1])
+                    hps.append(workers.submit(classifier.test, self.hp_tuning_data))
+                for f in futures.as_completed(hps):
+                    if isinstance(f.result(), Exception):
+                        print("Exception in getting results from future objects")
+                        raise
+                    tuning_results.append(f.result())
+        else:
+            for grid_option in grid_options:
+                classifier = Classifier(k=grid_option[0], training_data=self.training_data,
+                                        dist_algo=grid_option[1])
+                tuning_results.append(classifier.test(self.hp_tuning_data))
         best_k, best_dist_algo = self.select_best_parameters(tuning_results)
 
         return best_k, best_dist_algo
 
     @staticmethod
-    def select_best_parameters(tuning_results: List[Tuple[int, str, int]]):
+    def select_best_parameters(tuning_results: List[Tuple[int, str, float]]):
         sorted_tuning_results = tuning_results.copy()
         sorted_tuning_results.sort(key=lambda x: x[2])
         logger.debug(f"Hyperparameter Tuning Results sorted according to test_score: {sorted_tuning_results}")
