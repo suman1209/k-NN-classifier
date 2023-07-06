@@ -1,2 +1,2 @@
-zoneinfo
+backports.zoneinfo==0.2.1
 pytest==7.4.0
