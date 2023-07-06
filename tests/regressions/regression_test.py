@@ -2,9 +2,9 @@ from pathlib import Path
 import os
 import sys
 sys.path.insert(0, str(Path.cwd().parent.parent))
-from classifier_classes.config import Config
-import subprocess
-from classifier_classes.utilities import compare_two_files
+from classifier_classes.config import Config  # noqa: E402
+import subprocess  # noqa: E402
+from classifier_classes.utilities import compare_two_files  # noqa: E402
 
 
 def run_regression():

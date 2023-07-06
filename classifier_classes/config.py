@@ -9,7 +9,7 @@ from pathlib import Path
 
 
 class Config:
-    CONFIG_JSON = f"classifier_config.json"
+    CONFIG_JSON = "classifier_config.json"
     _instance = None
 
     def __new__(cls):

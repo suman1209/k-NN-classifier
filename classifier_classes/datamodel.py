@@ -31,13 +31,12 @@ class DataSet:
 class CsvParser(DataSet):
     DATASET: List[KnownSample] = []
     """Here the expected dataset is a csv in the following format...
-    
        sepal_length,sepal_width,petal_length,petal_width,species
        '5.1','3.5','1.4','0.2','Iris-setosa'
        ...
        ...
-       
        """
+
     def __init__(self, raw_data_path: str):
         super().__init__(raw_data_path)
         self.uploaded = datetime.datetime.now(tz=ZoneInfo("Asia/Colombo"))

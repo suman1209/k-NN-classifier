@@ -10,6 +10,7 @@ from typing import List, Tuple
 
 logger = ClassifierLogger.logger
 
+
 class HyperParameters:
     potential_k_values = [1, 3, 5, 7, 9, 11, 13]
     potential_dist_algos = [Da.ed4.value, Da.mh4.value]

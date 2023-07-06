@@ -15,7 +15,7 @@ from classifier_classes.config import Config
 logger = ClassifierLogger().get_logger()
 
 
-class KNNClassifier :
+class KNNClassifier:
     """This class is the driver script for getting a classification for an Unknown Sample"""
     def __init__(self, raw_input_file_path: str):
         self.data_model = DatasetFactory(raw_input_file_path).create_data_model()

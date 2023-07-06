@@ -36,7 +36,7 @@ class EuclideanDistance:
         return dist
 
     def __repr__(self):
-        return f"EuclideanDistance()"
+        return "EuclideanDistance()"
 
 
 class ManhattanDistance:
