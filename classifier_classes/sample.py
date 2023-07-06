@@ -1,7 +1,7 @@
 # Copyright (c) 2023 Suman
 # This software is released under the MIT License.
 # Contact Suman via sumanrbt1997@gmail.com for further details
-
+from __future__ import annotations
 from classifier_classes.constants import ConstantNames as Cn
 from classifier_classes.constants import Species
 from classifier_classes.exceptions import InvalidSampleError

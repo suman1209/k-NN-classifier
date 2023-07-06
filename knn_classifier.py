@@ -8,6 +8,9 @@ from classifier_classes.hyperparameters import HyperParameters as Hp
 from classifier_classes.classifier import Classifier
 from classifier_classes.constants import Approximations
 from classifier_classes.logger import ClassifierLogger
+from classifier_classes.config import Config
+
+
 # creating a logger instance only once
 logger = ClassifierLogger().get_logger()
 
@@ -46,7 +49,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--raw_inp_data_path', type=str, help='Path to the dataset file')
     args = parser.parse_args()
-
+    # initialising the configs
+    classifier_config = Config()
     clf = KNNClassifier(args.raw_inp_data_path)
     # clf object created
     print(clf)
@@ -57,4 +61,3 @@ if __name__ == '__main__':
     print(f"Best Hyperparameters chosen: k: {clf.k} dist_algo: {clf.dist_algo}")
     # performance on the validation data
     print(f"Accuracy on the validation data: {clf.find_accuracy()}")
-

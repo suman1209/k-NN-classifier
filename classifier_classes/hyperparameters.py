@@ -1,6 +1,7 @@
 # Copyright (c) 2023 Suman
 # This software is released under the MIT License.
 # Contact Suman via sumanrbt1997@gmail.com for further details
+from __future__ import annotations
 from classifier_classes.datamodel import CsvParser
 from classifier_classes.constants import DistanceAlgos as Da
 from classifier_classes.classifier import Classifier

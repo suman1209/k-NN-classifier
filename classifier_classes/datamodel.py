@@ -10,7 +10,10 @@ from classifier_classes.logger import ClassifierLogger
 from classifier_classes.constants import ConstantNames as Cn
 from classifier_classes.config import Config
 import datetime
-from zoneinfo import ZoneInfo
+try:
+    from zoneinfo import ZoneInfo
+except ImportError:
+    from backports.zoneinfo import ZoneInfo
 logger = ClassifierLogger.logger
 
 

@@ -86,9 +86,9 @@ if __name__ == "__main__":
     # testing
     vector1 = Sample(1, 2, 3, 4)
     vector2 = Sample(5, 6, 7, 8)
-    vd = DistanceFactory.get_distance_algo(Da.ed4).get_distance(vector1, vector2)
+    vd = DistanceFactory.get_distance_algo(Da.ed4.value).get_distance(vector1, vector2)
     print(f"{vd = }")
-    md = DistanceFactory.get_distance_algo(Da.mh4).get_distance(vector1, vector2)
+    md = DistanceFactory.get_distance_algo(Da.mh4.value).get_distance(vector1, vector2)
     print(f"{md = }")
     import doctest
     doctest.testmod()
