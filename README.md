@@ -8,7 +8,7 @@ This project is created purely for learning purpose.**
 This project is ideal for learning purposes because the Iris Classification is a simple well prepared problem. This helps one to focus more on best practice in software development. This project includes the following:
 
 1. Unit and regression tests
-2. Design patterns like strategy design pattern for choosing difference distance algorithms
+2. Design patterns like strategy design pattern for choosing different distance algorithms
 3. Python's concurrent.futures for running computations in multiple cores to achieve massive speed boosts during the grid search for parameters
 4. CICD using GitHub Actions
 
